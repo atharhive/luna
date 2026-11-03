@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { applyWireframe, isSolidLayerWireframe } from './wireframe.js';
 
 /**
  * Universal Spatial Photogrammetry & 3D Twin Ingestion Engine
@@ -298,6 +299,7 @@ export class SpatialIngestionEngine {
     reliefMesh.position.set(0, 1.45, -2.4);
     reliefMesh.castShadow = true;
     reliefMesh.receiveShadow = true;
+    applyWireframe(reliefMesh, isSolidLayerWireframe(this.solidGroup));
     this.solidGroup.add(reliefMesh);
   }
 

@@ -3,6 +3,7 @@ window.THREE = THREE;
 import { buildRoomScene } from './roomBuilder.js';
 import { createPOIMarkers, createNavigationPath, createMeasurementTool } from './poiManager.js';
 import { SpatialIngestionEngine } from './spatialIngestion.js';
+import { setSolidLayerWireframe, isSolidLayerWireframe } from './wireframe.js';
 
 // Application State
 const state = {
@@ -65,6 +66,19 @@ function setLayer(layer) {
 btnLayerSolid.addEventListener('click', () => setLayer('solid'));
 btnLayerSplat.addEventListener('click', () => setLayer('splat'));
 btnLayerNavmesh.addEventListener('click', () => setLayer('navmesh'));
+
+// Wireframe Toggle for the PBR solid layer (visual collision inspection)
+const btnToggleWireframe = document.getElementById('btn-toggle-wireframe');
+
+function setWireframe(enabled) {
+  setSolidLayerWireframe(solidGroup, enabled);
+
+  const activeClasses = 'px-3 py-1.5 rounded-2xl backdrop-blur-xl bg-cyan-500/20 border border-cyan-500/40 text-xs font-bold text-cyan-300 transition-all shadow-2xl flex items-center gap-1.5';
+  const idleClasses = 'px-3 py-1.5 rounded-2xl backdrop-blur-xl bg-slate-900/85 border border-slate-700/60 text-xs font-bold text-slate-400 hover:text-white transition-all shadow-2xl flex items-center gap-1.5';
+  btnToggleWireframe.className = enabled ? activeClasses : idleClasses;
+}
+
+btnToggleWireframe.addEventListener('click', () => setWireframe(!isSolidLayerWireframe(solidGroup)));
 
 // 4. First-Person Pointer Lock & Controls
 let isLocked = false;
